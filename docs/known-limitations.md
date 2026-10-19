@@ -10,6 +10,11 @@
   skill and are not comparable between people.
 - **History is per browser** (`localStorage`). Clearing site data removes it; export it to keep it.
   At most 200 attempts are kept (oldest finished attempts are dropped first).
+- **No import.** History can be exported as JSON but not imported back.
+- **Deleting one attempt** in History happens at once, without a confirmation (clearing all history
+  asks first).
+- **Two tabs** stay consistent through the browser's storage event; two tabs writing within the same
+  instant could still lose one write.
 - **English only.**
 - **Tested** in Microsoft Edge (Chromium) on Windows; no screen-reader software session was run
   (structure was checked through accessible roles and names in Playwright).

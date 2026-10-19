@@ -19,8 +19,10 @@ and replay any branch.
   terms, unrealistic job requirements, uncertain compensation, a discriminatory request, unsupported
   candidate claims, a candidate's refusal to share salary history, a candidate's "not yet" to being
   submitted, and a restrictive covenant.
-- **Every step** has context, what the other person says, two or three meaningful answers, an
-  immediate consequence, an explanation naming the rubric dimensions, and links to the glossary.
+- **Every step** has context, what the other person says, and two or three meaningful answers. Each
+  answer shows an immediate consequence, an explanation that names the rubric dimension it bears on,
+  the exact rubric evidence (+/−) for every dimension it touches and, where a term applies, glossary
+  links.
 - **Transparent rubric** over six dimensions: factual preparation, ethical conduct, question relevance,
   expectation-setting, candidate consent and appropriate escalation. Each dimension shows a band and
   the exact choices behind it. There is no overall percentage or grade.
@@ -32,7 +34,8 @@ and replay any branch.
 - **Coaching** at every step, written into the scenario: what is still missing comes first, then what
   you know, then a suggested next action. No AI or paid service is involved.
 - **Accessible**: keyboard-only play (focus moves to what changed after each choice), screen-reader
-  headings and labels, light and dark themes, mobile layout.
+  headings and labels, light and dark themes, mobile layout down to 320 px (tables stack on narrow
+  screens). History stays consistent across several open tabs.
 
 ## Quick start
 

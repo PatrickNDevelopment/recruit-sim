@@ -1,7 +1,8 @@
 # Handoff
 
 **State:** v0.1 built locally on branch `phase/07a-build`. Not pushed, not deployed, no remote.
-Registry status `in_progress` until an independent acceptance review (prompt 07B) passes.
+Independent acceptance review (07B) done on 2026-10-19: see Part 1 of `docs/test-report.md`. It fixed
+six defects (with regression tests) and found no remaining blocker for publication review.
 
 ## Run
 
@@ -27,9 +28,16 @@ npm test             # unit tests, including every path through both scenarios
 
 ## Release blockers before publication
 
-1. Independent acceptance review (07B).
-2. Owner review and explicit approval to publish.
-3. First CI run on Linux.
+1. Owner review (README, screenshots, limitations, licence, secret scan) and explicit approval to
+   create the repository, push and enable Pages.
+2. First CI run on Linux (Chromium) after the push; first Pages deployment loaded and checked under
+   `/recruit-sim/`.
+
+## Exact next step
+
+Owner publication review (G3). Nothing else is pending locally; `portfolio-control` registry status
+can move to `ready_for_publication_review` (not changed by the acceptance session, which may not edit
+that repository).
 
 ## Gotchas
 
