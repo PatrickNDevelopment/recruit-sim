@@ -238,6 +238,95 @@ test('mobile width has no horizontal page scroll', async ({ page }) => {
   }
 });
 
+// Regressions found in the independent acceptance review.
+
+test('a passed practice check never carries over to a replayed attempt without consent', async ({
+  page,
+}) => {
+  await start(page, 'candidate-screening');
+  for (const c of [
+    'prepare',
+    'explain',
+    'probe',
+    'honest',
+    'respect',
+    'ask',
+    'hold',
+    'confirm',
+    'flag',
+    'next-steps',
+  ])
+    await pick(page, c);
+  await page.getByRole('button', { name: 'Try to submit the candidate (practice)' }).click();
+  await expect(page.getByTestId('submit-result')).toContainText('Practice check passed');
+  await page.getByRole('button', { name: 'Replay from step 6 (Consent)' }).click();
+  await expect(page.getByRole('heading', { name: 'What happened (step 5)' })).toBeFocused();
+  for (const c of ['assume', 'flag', 'next-steps']) await pick(page, c);
+  await expect(page.getByTestId('readiness')).toHaveText('Not ready');
+  await expect(page.getByTestId('submit-result')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Try to submit the candidate (practice)' }).click();
+  await expect(page.getByTestId('submit-result')).toContainText('Blocked.');
+});
+
+test('two tabs: neither overwrites the other, and a deletion is not undone', async ({
+  page,
+  context,
+}) => {
+  await start(page, 'client-discovery');
+  await pick(page, 'research');
+  const other = await context.newPage();
+  await other.goto('./#/');
+  await start(other, 'candidate-screening');
+  await pick(other, 'prepare');
+  await pick(page, 'slow-down');
+  const stored = () =>
+    page.evaluate(() =>
+      (
+        JSON.parse(localStorage.getItem('recruit-sim.history.v1') as string) as {
+          attempts: { scenarioId: string; steps: unknown[] }[];
+        }
+      ).attempts
+        .map((a) => `${a.scenarioId}:${a.steps.length}`)
+        .sort(),
+    );
+  await expect.poll(stored).toEqual(['candidate-screening:1', 'client-discovery:2']);
+
+  // Delete the attempt that the first tab is playing, in the other tab.
+  await nav(other).getByRole('link', { name: 'History' }).click();
+  await other
+    .locator('tbody tr', { hasText: 'Client discovery' })
+    .getByRole('button', { name: /Delete attempt/ })
+    .click();
+  await expect(other.getByRole('heading', { name: 'Learning history' })).toBeFocused();
+  await expect(page.getByRole('heading', { name: 'Attempt not found' })).toBeVisible();
+  await expect.poll(stored).toEqual(['candidate-screening:1']);
+  await other.close();
+});
+
+test('focus lands on the step after starting or replaying from step 1', async ({ page }) => {
+  await start(page, 'client-discovery');
+  await expect(page.getByRole('heading', { name: 'Step 1: Preparation' })).toBeFocused();
+  for (const c of ['research', 'promise-cvs', 'send-now']) await pick(page, c);
+  await page.getByRole('button', { name: 'Replay from step 1 (Preparation)' }).click();
+  await expect(page.getByRole('heading', { name: 'Step 1: Preparation' })).toBeFocused();
+  await nav(page).getByRole('link', { name: 'History' }).click();
+  await page.getByRole('button', { name: 'Clear history' }).click();
+  await page.getByRole('button', { name: 'Yes, delete all' }).click();
+  await expect(page.getByRole('heading', { name: 'Learning history' })).toBeFocused();
+});
+
+test('unknown routes, attempts and glossary terms are reported', async ({ page }) => {
+  await page.goto('./#/no-such-page');
+  await expect(page.getByRole('heading', { level: 2, name: 'Page not found' })).toBeVisible();
+  await page.goto('./#/review/a-missing');
+  await expect(page.getByRole('heading', { level: 2, name: 'Attempt not found' })).toBeVisible();
+  await page.goto('./#/glossary/no-such-term');
+  await expect(page.getByTestId('unknown-term')).toContainText('no-such-term');
+  await page.goto('./#/glossary/exclusivity');
+  await expect(page.getByTestId('unknown-term')).toHaveCount(0);
+  await expect(page.locator('#term-exclusivity')).toBeFocused();
+});
+
 test('screenshots for the docs', async ({ page }) => {
   const dir = join(process.cwd(), 'docs', 'screenshots');
   mkdirSync(dir, { recursive: true });

@@ -9,7 +9,7 @@ import {
   type History,
 } from './engine';
 import { download } from './lib/files';
-import { loadHistory, newId, saveHistory } from './lib/storage';
+import { HISTORY_KEY, loadHistory, newId, saveHistory } from './lib/storage';
 import { scenarioById } from './scenarios';
 import { Play } from './ui/Play';
 import { About, Glossary, HistoryPage, Home, Review, RubricPage } from './ui/Pages';
@@ -21,7 +21,8 @@ type Route =
   | { page: 'history' }
   | { page: 'glossary'; term: string | null }
   | { page: 'rubric' }
-  | { page: 'about' };
+  | { page: 'about' }
+  | { page: 'notfound' };
 
 function parseRoute(): Route {
   const parts = window.location.hash.replace(/^#\/?/, '').split('/');
@@ -32,7 +33,8 @@ function parseRoute(): Route {
   if (p === 'glossary') return { page: 'glossary', term: arg ?? null };
   if (p === 'rubric') return { page: 'rubric' };
   if (p === 'about') return { page: 'about' };
-  return { page: 'home' };
+  if (p === undefined || p === '') return { page: 'home' };
+  return { page: 'notfound' };
 }
 
 const NAV: { href: string; label: string; pages: Route['page'][] }[] = [
@@ -64,6 +66,19 @@ export function App() {
     const on = () => setRoute(parseRoute());
     window.addEventListener('hashchange', on);
     return () => window.removeEventListener('hashchange', on);
+  }, []);
+
+  // Another tab saved the history: adopt it, so this tab neither overwrites that tab's attempts nor
+  // resurrects attempts deleted there.
+  useEffect(() => {
+    const on = (e: StorageEvent) => {
+      if (e.key !== null && e.key !== HISTORY_KEY) return;
+      const r = loadHistory();
+      if (r.kind === 'ok') setHistory(r.history);
+      else setRecovered({ raw: r.raw, errors: r.errors });
+    };
+    window.addEventListener('storage', on);
+    return () => window.removeEventListener('storage', on);
   }, []);
 
   useEffect(() => {
@@ -170,12 +185,14 @@ export function App() {
         ) : null}
         {(route.page === 'play' || route.page === 'review') && (!attempt || !scenario) ? (
           <div className="card empty">
+            <h2>Attempt not found</h2>
             <p>That attempt is not in this browser’s history.</p>
             <a href="#/">Choose a scenario</a>
           </div>
         ) : null}
         {route.page === 'play' && attempt && scenario ? (
           <Play
+            key={attempt.id}
             s={scenario}
             a={attempt}
             onChoose={(choiceId) => {
@@ -187,7 +204,12 @@ export function App() {
               );
             }}
             onCoach={() =>
-              commit(upsert(history, { ...attempt, coachViews: attempt.coachViews + 1 }))
+              commit(
+                upsert(history, {
+                  ...attempt,
+                  coachViews: Math.min(attempt.coachViews + 1, 10_000),
+                }),
+              )
             }
             onReplay={replay}
           />
@@ -214,6 +236,13 @@ export function App() {
         {route.page === 'glossary' ? <Glossary focus={route.term} /> : null}
         {route.page === 'rubric' ? <RubricPage /> : null}
         {route.page === 'about' ? <About /> : null}
+        {route.page === 'notfound' ? (
+          <div className="card empty">
+            <h2>Page not found</h2>
+            <p>There is no page at this address.</p>
+            <a href="#/">Choose a scenario</a>
+          </div>
+        ) : null}
       </main>
       <footer className="foot small muted">
         <p>

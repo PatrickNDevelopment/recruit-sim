@@ -20,7 +20,9 @@ import {
   validateHistory,
   validateScenario,
   MAX_ATTEMPTS,
+  DIMENSION_NAMES,
   type Attempt,
+  type Dimension,
   type Scenario,
 } from '../src/engine';
 import { SCENARIOS, scenarioById } from '../src/scenarios';
@@ -85,6 +87,20 @@ describe('authored scenarios', () => {
               GLOSSARY.some((g) => g.id === t),
               `${n.id}/${c.id}: ${t}`,
             ).toBe(true);
+        }
+      }
+    });
+    it(`${s.id}: every explanation names at least one rubric dimension the choice affects`, () => {
+      // Regression (acceptance review): three explanations named no dimension at all.
+      for (const n of Object.values(s.nodes)) {
+        if (n.kind !== 'step') continue;
+        for (const c of n.choices) {
+          const dims = Object.keys(c.effects) as Dimension[];
+          const text = c.explanation.toLowerCase();
+          expect(
+            dims.some((d) => text.includes(DIMENSION_NAMES[d].toLowerCase())),
+            `${n.id}/${c.id}`,
+          ).toBe(true);
         }
       }
     });

@@ -81,7 +81,7 @@ export const candidateScreening: Scenario = {
     },
     {
       flag: 'compMisrepresented',
-      text: 'The approved range comes back lower than the figure you gave Mina. She withdraws and tells two former colleagues about it.',
+      text: 'The approved range comes back lower than the 85k you gave Mina. She feels misled; even if she stays in the process, she now checks everything you tell her, and she tells two former colleagues about it.',
     },
     {
       flag: 'sentWithoutConsent',
@@ -218,7 +218,7 @@ export const candidateScreening: Scenario = {
           'pay',
           { relevance: 1, ethics: -1 },
           'Mina is taken aback, then explains she coordinated three teams. The call is cooler now.',
-          'You found the truth, but an accusation is not a question. Ask about scope instead of judging the claim.',
+          'Question relevance: you found the truth. Ethical conduct: an accusation is not a question. Ask about scope instead of judging the claim.',
           { set: ['claimsToVerify'] },
         ),
       ],
@@ -287,7 +287,7 @@ export const candidateScreening: Scenario = {
         choice(
           'respect',
           'strong',
-          '“That’s completely fine. Your expectations are what I need, and you’ve given me those.”',
+          '“That’s completely fine. What you would expect from a new role is what I need, not what you earn now.”',
           'consent',
           { ethics: 2, relevance: 1 },
           'Mina relaxes.',

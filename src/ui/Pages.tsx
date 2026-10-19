@@ -1,5 +1,5 @@
 /** Home, review, history, glossary, rubric and about pages. */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   DIMENSIONS,
   DIMENSION_HELP,
@@ -159,11 +159,16 @@ export function HistoryPage(props: {
   onDelete: (id: string) => void;
 }) {
   const [confirm, setConfirm] = useState(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const list = [...props.history.attempts].reverse();
+  // The pressed button disappears with its row (or the confirmation); keep focus on the page.
+  const refocus = () => headingRef.current?.focus();
   return (
     <section aria-labelledby="history-h">
       <div className="row-between">
-        <h2 id="history-h">Learning history</h2>
+        <h2 id="history-h" ref={headingRef} tabIndex={-1}>
+          Learning history
+        </h2>
         <div className="inline-group">
           <button
             type="button"
@@ -187,6 +192,7 @@ export function HistoryPage(props: {
                 onClick={() => {
                   setConfirm(false);
                   props.onClear();
+                  refocus();
                 }}
               >
                 Yes, delete all
@@ -256,7 +262,10 @@ export function HistoryPage(props: {
                       <button
                         type="button"
                         className="secondary small"
-                        onClick={() => props.onDelete(a.id)}
+                        onClick={() => {
+                          props.onDelete(a.id);
+                          refocus();
+                        }}
                         aria-label={`Delete attempt started ${a.startedAt}`}
                       >
                         Delete
@@ -274,6 +283,7 @@ export function HistoryPage(props: {
 }
 
 export function Glossary(props: { focus: string | null }) {
+  const unknown = props.focus !== null && !GLOSSARY.some((t) => t.id === props.focus);
   useEffect(() => {
     if (props.focus) document.getElementById(`term-${props.focus}`)?.focus();
   }, [props.focus]);
@@ -284,6 +294,11 @@ export function Glossary(props: { focus: string | null }) {
         Plain-language practice definitions. Laws differ by jurisdiction; nothing here is legal
         advice.
       </p>
+      {unknown ? (
+        <p className="notice warn" data-testid="unknown-term">
+          There is no glossary entry called “{props.focus}”. All entries are listed below.
+        </p>
+      ) : null}
       <dl className="glossary">
         {GLOSSARY.map((t) => (
           <div key={t.id} className={props.focus === t.id ? 'focused' : undefined}>

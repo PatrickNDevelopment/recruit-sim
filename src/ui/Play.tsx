@@ -88,9 +88,10 @@ export function Play(props: {
   const focusRef = useRef<HTMLHeadingElement>(null);
   const [submitResult, setSubmitResult] = useState<string | null>(null);
 
-  // Move focus to what changed after each choice, so keyboard and screen-reader users follow along.
+  // Move focus to what changed after each choice (or to the first step of a new or replayed
+  // attempt), so keyboard and screen-reader users follow along. The component is keyed by attempt.
   useEffect(() => {
-    if (a.steps.length > 0) focusRef.current?.focus();
+    focusRef.current?.focus();
   }, [a.steps.length]);
 
   if (!node) return <p className="notice danger">This attempt no longer matches the scenario.</p>;
