@@ -112,7 +112,10 @@ name the main dimension while the evidence chips show every dimension.
 
 ### Final clean-clone run
 
-FINAL_CLONE_RESULT
+The scratch clone was pulled to commit `e23eea6` (code identical to the final commit, which only adds
+this paragraph) and `scripts\verify.ps1 *>&1` was run there: exit code **0**, `ALL CHECKS PASSED`
+(`npm ci` 0 vulnerabilities, format, lint, typecheck, 21 unit tests, build, secret scan clean, 14
+Playwright tests on the production build under `/recruit-sim/`). The clone was then deleted.
 
 ## Part 2: builder's report (2026-10-19)
 
