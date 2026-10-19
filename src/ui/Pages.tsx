@@ -221,7 +221,7 @@ export function HistoryPage(props: {
         </div>
       ) : (
         <div className="table-wrap">
-          <table>
+          <table className="stack">
             <thead>
               <tr>
                 <th scope="col">Scenario</th>
@@ -244,14 +244,18 @@ export function HistoryPage(props: {
                       {s.title}
                       {a.replayOf ? <span className="small muted block">replay</span> : null}
                     </th>
-                    <td>{a.startedAt.slice(0, 16).replace('T', ' ')}</td>
-                    <td>
+                    <td data-label="Started (UTC)">{a.startedAt.slice(0, 16).replace('T', ' ')}</td>
+                    <td data-label="Status">
                       {done
                         ? `Ended: ${ending(s, a)?.end.title}`
                         : `In progress (step ${a.steps.length + 1})`}
                     </td>
-                    <td>{done ? (readiness(s, a).ready ? 'Ready' : 'Not ready') : '—'}</td>
-                    <td className="num">{mistakes(s, a).length}</td>
+                    <td data-label="Readiness">
+                      {done ? (readiness(s, a).ready ? 'Ready' : 'Not ready') : '—'}
+                    </td>
+                    <td className="num" data-label="Mistakes">
+                      {mistakes(s, a).length}
+                    </td>
                     <td className="actions">
                       <a
                         className="button secondary small"

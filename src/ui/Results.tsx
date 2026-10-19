@@ -43,7 +43,7 @@ export function RubricTable(props: { s: Scenario; a: Attempt }) {
   const rows = rubric(props.s, props.a);
   return (
     <div className="table-wrap">
-      <table>
+      <table className="stack">
         <caption>Rubric evaluation (practice feedback, not a certification)</caption>
         <thead>
           <tr>
@@ -59,7 +59,7 @@ export function RubricTable(props: { s: Scenario; a: Attempt }) {
                 {DIMENSION_NAMES[r.dimension]}
                 <span className="small muted block">{DIMENSION_HELP[r.dimension]}</span>
               </th>
-              <td>
+              <td data-label="Band">
                 <span className={`badge band-${r.band.split(' ')[0]?.toLowerCase()}`}>
                   {r.band}
                 </span>
@@ -69,7 +69,7 @@ export function RubricTable(props: { s: Scenario; a: Attempt }) {
                   </span>
                 ) : null}
               </td>
-              <td>
+              <td data-label="Evidence">
                 {r.evidence.length === 0 ? (
                   <span className="muted small">No choice on this path tested it.</span>
                 ) : (

@@ -775,3 +775,41 @@ button.choice:hover {
 .glossary dd {
   margin: 0.2rem 0 0;
 }
+
+/* Narrow screens: the rubric evidence and history actions were scrolled out of view inside their
+   tables. Stack each row instead; td[data-label] repeats the column header. */
+@media (max-width: 640px) {
+  table.stack,
+  table.stack tbody,
+  table.stack tr,
+  table.stack th,
+  table.stack td {
+    display: block;
+    width: auto;
+  }
+  table.stack thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  table.stack tr {
+    border-bottom: 1px solid var(--grid);
+    padding: 0.4rem 0;
+  }
+  table.stack th,
+  table.stack td {
+    white-space: normal;
+    border-bottom: 0;
+    padding: 0.2rem 0.6rem;
+  }
+  table.stack td.num {
+    text-align: left;
+  }
+  table.stack td[data-label]::before {
+    content: attr(data-label) ': ';
+    font-weight: 600;
+  }
+}

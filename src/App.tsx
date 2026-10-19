@@ -59,7 +59,9 @@ export function App() {
   const [history, setHistory] = useState<History>(start.history);
   const [recovered, setRecovered] = useState(start.recovered);
   const [route, setRoute] = useState<Route>(parseRoute);
-  const [message, setMessage] = useState('');
+  // A status message belongs to the page it was announced on; it is not repeated on other pages.
+  const [status, setStatus] = useState({ text: '', hash: '' });
+  const setMessage = (text: string, hash = window.location.hash) => setStatus({ text, hash });
   const [storageError, setStorageError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -93,7 +95,8 @@ export function App() {
   }
 
   function open(a: Attempt, msg: string) {
-    commit({ ...upsert(history, a), current: a.id }, msg);
+    commit({ ...upsert(history, a), current: a.id });
+    setMessage(msg, `#/play/${a.id}`);
     window.location.assign(`#/play/${a.id}`);
   }
 
@@ -171,7 +174,7 @@ export function App() {
         </div>
       ) : null}
       <p className="status" role="status" aria-live="polite">
-        {message}
+        {status.hash === window.location.hash ? status.text : ''}
       </p>
       <main id="main" tabIndex={-1}>
         {route.page === 'home' ? (

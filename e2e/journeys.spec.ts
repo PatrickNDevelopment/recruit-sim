@@ -327,6 +327,27 @@ test('unknown routes, attempts and glossary terms are reported', async ({ page }
   await expect(page.locator('#term-exclusivity')).toBeFocused();
 });
 
+test('mobile: rubric evidence and history actions are on screen; status stays on its page', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await start(page, 'client-discovery');
+  for (const c of ['research', 'promise-cvs', 'send-now']) await pick(page, c);
+  await expect(page.getByRole('status')).toHaveText('Scenario finished. Review the ending below.');
+  const inView = async (loc: ReturnType<Page['locator']>) => {
+    const box = await loc.boundingBox();
+    return box !== null && box.x >= 0 && box.x + box.width <= 320;
+  };
+  const evidence = page.locator('[data-dimension="consent"] .evidence li').first();
+  await expect(evidence).toContainText('step 3');
+  expect(await inView(evidence)).toBe(true);
+  await nav(page).getByRole('link', { name: 'History' }).click();
+  await expect(page.getByRole('status')).toHaveText('');
+  const del = page.getByRole('button', { name: /Delete attempt/ });
+  expect(await inView(del)).toBe(true);
+  expect(await inView(page.getByRole('link', { name: 'Review' }))).toBe(true);
+});
+
 test('screenshots for the docs', async ({ page }) => {
   const dir = join(process.cwd(), 'docs', 'screenshots');
   mkdirSync(dir, { recursive: true });
