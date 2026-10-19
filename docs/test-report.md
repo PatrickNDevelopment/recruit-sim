@@ -7,7 +7,7 @@ configured for Chromium on Ubuntu but has never run (no remote).
 
 ### Full gate
 
-`powershell -File scriptserify.ps1`, exit code **0** (`ALL CHECKS PASSED`):
+`powershell -File scripts/verify.ps1`, exit code **0** (`ALL CHECKS PASSED`):
 
 | Step             | Command                | Result                                                  |
 | ---------------- | ---------------------- | ------------------------------------------------------- |
