@@ -2,7 +2,7 @@
 
 **State:** v0.1 built locally on branch `phase/07a-build`. Not pushed, not deployed, no remote.
 Independent acceptance review (07B) done on 2026-10-19: see Part 1 of `docs/test-report.md`. It fixed
-six defects (with regression tests) and found no remaining blocker for publication review.
+eight defects (with regression tests) and found no remaining blocker for publication review.
 
 ## Run
 
