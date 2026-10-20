@@ -19,3 +19,8 @@
 - **Tested** in Microsoft Edge (Chromium) on Windows; no screen-reader software session was run
   (structure was checked through accessible roles and names in Playwright).
 - **Published 2026-10-19.** CI (Linux, Chromium) and the Pages deploy were green on the first run.
+- **Shared browser storage on the demo site.** All ten portfolio demos are served from
+  `patrickndevelopment.github.io`, so they share one browser storage quota (about 5 MB). Each app
+  uses its own `recruit-sim.*` keys and only reacts to changes of its own keys, but a very large workspace
+  in one demo can make saving fail in another (the app then shows its save-failed notice). A local
+  run has its own origin and is not affected.
