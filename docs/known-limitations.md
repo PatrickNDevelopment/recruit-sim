@@ -18,4 +18,4 @@
 - **English only.**
 - **Tested** in Microsoft Edge (Chromium) on Windows; no screen-reader software session was run
   (structure was checked through accessible roles and names in Playwright).
-- CI and the Pages workflow exist but have never run, because the repository has no remote.
+- **Published 2026-10-19.** CI (Linux, Chromium) and the Pages deploy were green on the first run.

@@ -1,6 +1,6 @@
 # Handoff
 
-**State:** v0.1 built locally on branch `phase/07a-build`. Not pushed, not deployed, no remote.
+**State:** v0.1 built locally on branch `phase/07a-build`. Published 2026-10-19: https://github.com/PatrickNDevelopment/recruit-sim (branch `main`), demo https://patrickndevelopment.github.io/recruit-sim/; CI and Pages green on the first run.
 Independent acceptance review (07B) done on 2026-10-19: see Part 1 of `docs/test-report.md`. It fixed
 eight defects (with regression tests) and found no remaining blocker for publication review.
 
@@ -23,21 +23,20 @@ npm test             # unit tests, including every path through both scenarios
 
 ## What is absent
 
-- No hosted demo; CI and Pages workflows have never run (no remote).
+- Hosted demo: https://patrickndevelopment.github.io/recruit-sim/ (static build). CI and Pages ran green on the first push (2026-10-19).
 - Backlog: scenario-authoring tool, opt-in AI role-play with clear labelling (docs/backlog.md).
 
-## Release blockers before publication
+## Publication
 
-1. Owner review (README, screenshots, limitations, licence, secret scan) and explicit approval to
-   create the repository, push and enable Pages.
-2. First CI run on Linux (Chromium) after the push; first Pages deployment loaded and checked under
-   `/recruit-sim/`.
+Published 2026-10-19 with the owner's approval (portfolio decision D-007): public repository
+https://github.com/PatrickNDevelopment/recruit-sim (MIT, branch `main`), GitHub Pages at https://patrickndevelopment.github.io/recruit-sim/. The
+first CI run (Linux, Chromium) and Pages deployment were green; a live check loaded the demo,
+refreshed it and found no console errors and no requests to localhost.
 
-## Exact next step
+## Next action
 
-Owner publication review (G3). Nothing else is pending locally; `portfolio-control` registry status
-can move to `ready_for_publication_review` (not changed by the acceptance session, which may not edit
-that repository).
+None required for v0.1; ideas are in `docs/backlog.md`. The portfolio's final cross-project audit
+(prompt 13) is next.
 
 ## Gotchas
 

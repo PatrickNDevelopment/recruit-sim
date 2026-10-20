@@ -7,7 +7,7 @@ and replay any branch.
 
 ![RecruitSim ending screen with readiness checklist and rubric](docs/screenshots/ending-desktop.png)
 
-> **Status:** v0.1, built and tested locally. It is **not published or deployed**; run it locally
+> **Status:** v0.1, published. **[Try the demo](https://patrickndevelopment.github.io/recruit-sim/)** or run it locally
 > (below). This is practice software: it is **not** proof of recruiting competence or legal
 > compliance, it uses only invented people and companies, and it makes no decision about any real
 > candidate.
