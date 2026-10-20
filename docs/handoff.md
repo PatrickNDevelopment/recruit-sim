@@ -1,8 +1,9 @@
 # Handoff
 
-**State:** v0.1 built locally on branch `phase/07a-build`. Published 2026-10-19: https://github.com/PatrickNDevelopment/recruit-sim (branch `main`), demo https://patrickndevelopment.github.io/recruit-sim/; CI and Pages green on the first run.
-Independent acceptance review (07B) done on 2026-10-19: see Part 1 of `docs/test-report.md`. It fixed
-eight defects (with regression tests) and found no remaining blocker for publication review.
+**State:** v0.1, accepted by an independent review (prompt 07B, 2026-10-19) that fixed eight defects with regression tests (see Part 1 / "Independent acceptance" in
+[test-report.md](test-report.md)). Published 2026-10-19: https://github.com/PatrickNDevelopment/recruit-sim, branch `main`; demo
+https://patrickndevelopment.github.io/recruit-sim/. CI and Pages are green; the final cross-portfolio audit (2026-10-20) found no
+P0 or P1 issue. The reviews were separate Claude Code sessions, not human audits.
 
 ## Run
 
